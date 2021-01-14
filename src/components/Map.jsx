@@ -7,7 +7,7 @@ class MyMap extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      position: null,
+      agriculteurs:[]
     };
   }
   componentDidMount() {
@@ -16,13 +16,13 @@ class MyMap extends React.Component {
 
   getPosition() {
     axios
-      .get("http://localhost:8000/api/agriculteurs/70")
+      .get("http://localhost:8000/api/agriculteurs/")
       
       .then((response) => response.data)
       .then((data) => {
         console.log(data)
         this.setState({
-          position: data,
+          agriculteurs: data,
         });
       })
       .catch((err) => {
@@ -30,7 +30,7 @@ class MyMap extends React.Component {
       });
   }
   render() {
-    const {position}= this.state;
+    const {agriculteurs}= this.state;
     return (
       <MapContainer
         id="mapid"
@@ -48,14 +48,16 @@ class MyMap extends React.Component {
             Chartres
           </Popup>
         </Marker>
-        {position!==null && <Marker position={[position.lat, position.longitude]}>
+        {agriculteurs.map((agriculteur, key) => <Marker key={key} position={[agriculteur.lat, agriculteur.longitude]}>
           <Popup>
-            adresse
+            {agriculteur.zipcode}
             <br />
-            code postal
-            <br /> ville
+            {agriculteur.city}
+            <br />
+            {agriculteur.farm_size}
+            
           </Popup>
-        </Marker>}
+        </Marker>)}
         <LocationMarker />
       </MapContainer>
     );
