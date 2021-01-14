@@ -1,4 +1,4 @@
-import Maps from "./components/map/Maps";
+import MyMap from "./components/Map";
 import './App.css';
 
 
@@ -8,7 +8,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <Maps />
+      < MyMap />
     </div>
   );
 }
