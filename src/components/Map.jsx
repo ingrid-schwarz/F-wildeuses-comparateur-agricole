@@ -1,5 +1,5 @@
 import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 
 import axios from "axios";
 import LocationMarker from "./LocationMarker";
@@ -9,13 +9,15 @@ class MyMap extends React.Component {
     super(props);
     this.state = {
       agriculteurs: [],
+      acheteurs: [],
     };
   }
   componentDidMount() {
-    this.getPosition();
+    this.getAgriculteurs();
+    this.getAcheteurs();
   }
 
-  getPosition() {
+  getAgriculteurs() {
     axios
       .get("http://localhost:8000/api/agriculteurs/")
 
@@ -31,8 +33,24 @@ class MyMap extends React.Component {
       });
   }
 
+  getAcheteurs() {
+    axios
+      .get("http://localhost:8000/api/acheteurs/")
+
+      .then((response) => response.data)
+      .then((data) => {
+        console.log(data);
+        this.setState({
+          acheteurs: data,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   render() {
-    const { agriculteurs } = this.state;
+    const { agriculteurs, acheteurs } = this.state;
 
     return (
       <MapContainer
@@ -53,10 +71,7 @@ class MyMap extends React.Component {
           </Popup>
         </Marker>
         {agriculteurs.map((agriculteur, key) => (
-          <Marker
-            key={key}
-            position={[agriculteur.lat, agriculteur.longitude]}
-          >
+          <Marker key={key} position={[agriculteur.lat, agriculteur.longitude]}>
             <Popup>
               {agriculteur.zipcode}
               <br />
@@ -65,6 +80,26 @@ class MyMap extends React.Component {
               {agriculteur.farm_size}
             </Popup>
           </Marker>
+        ))}
+        {acheteurs.map((acheteur, key) => (
+          <Circle
+            pathOptions={{ color: "green", fillColor: "green" }}
+            radius={2000}
+            key={key}
+            center={[acheteur.lat, acheteur.longitude]}
+          >
+            <Marker key={key} position={[acheteur.lat, acheteur.longitude]}>
+              <Popup>
+                {acheteur.name}
+                <br />
+                {acheteur.type}
+                <br />
+                {acheteur.zipcode}
+                <br />
+                {acheteur.city}
+              </Popup>
+            </Marker>
+          </Circle>
         ))}
         <LocationMarker />
       </MapContainer>
