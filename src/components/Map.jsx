@@ -1,8 +1,11 @@
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
-
+import AcheteurIcon from "./AcheteurIcon";
+import AgriIcon from "./AgriIcons";
+import CompaIcon from "./CompaIcon";
 import axios from "axios";
 import LocationMarker from "./LocationMarker";
+
 
 class MyMap extends React.Component {
   constructor(props) {
@@ -64,14 +67,14 @@ class MyMap extends React.Component {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <Marker position={[48.44853267210437, 1.5359987423812038]}>
+        <Marker position={[48.44853267210437, 1.5359987423812038]} icon={CompaIcon}>
           <Popup>
             ComparateurAgricole.com <br /> 6 Av Nicolas Conté <br /> 28000
             Chartres
           </Popup>
         </Marker>
         {agriculteurs.map((agriculteur, key) => (
-          <Marker key={key} position={[agriculteur.lat, agriculteur.longitude]}>
+          <Marker key={key} position={[agriculteur.lat, agriculteur.longitude]} icon={AgriIcon}>
             <Popup>
               {agriculteur.zipcode}
               <br />
@@ -88,7 +91,7 @@ class MyMap extends React.Component {
             key={key}
             center={[acheteur.lat, acheteur.longitude]}
           >
-            <Marker key={key} position={[acheteur.lat, acheteur.longitude]}>
+            <Marker key={key} position={[acheteur.lat, acheteur.longitude]} icon={AcheteurIcon}>
               <Popup>
                 {acheteur.name}
                 <br />
