@@ -1,5 +1,6 @@
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
 import {useState } from "react";
+import GeoIcon from "./GeoIcon";
 
 
 function LocationMarker() {
@@ -15,7 +16,7 @@ function LocationMarker() {
     })
   
     return position === null ? null : (
-      <Marker position={position}>
+      <Marker position={position} icon={GeoIcon}>
         <Popup>Vous êtes ici</Popup>
       </Marker>
     )
